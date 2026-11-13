@@ -431,6 +431,14 @@ input[type=text]:focus{border-color:var(--ink)}
 #sheet img{max-width:100%;max-height:calc(100% - 120px);border-radius:10px;box-shadow:0 30px 70px -20px rgba(0,0,0,.55);transform:translateY(30px) scale(.94) rotate(-1.5deg);transition:transform .6s cubic-bezier(.2,.9,.25,1.1)}
 #sheet.on img{transform:none}
 #sheet .tip{font-size:12px;color:rgba(255,255,255,.8)}
+.share-row{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;width:100%;max-width:360px;padding:14px 10px 10px;border-radius:22px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18)}
+.share-row button{display:flex;flex-direction:column;align-items:center;gap:6px;color:#fff}
+.share-row .si{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;box-shadow:0 6px 16px -6px rgba(0,0,0,.35);transition:transform .15s}
+.share-row button:active .si{transform:scale(.9)}
+.share-row .si svg{width:40px;height:40px}
+.share-row b{font-size:11px;font-weight:500;color:rgba(255,255,255,.92);white-space:nowrap}
+#share-hint{min-height:18px;font-size:12px;color:rgba(255,255,255,.88);text-align:center;max-width:340px}
+.share-cancel{width:100%;max-width:360px;height:46px;border-radius:999px;background:rgba(255,255,255,.16);color:#fff;font-size:15px;font-weight:600}
 .sheet-act{display:flex;gap:8px;width:100%;max-width:340px}
 .sheet-act .cta{height:48px;flex:1;font-size:14px;text-decoration:none;box-shadow:none}
 .sheet-act .cta.w{background:#fff;color:var(--ink)}
@@ -633,8 +641,8 @@ body.shot *{transition:none!important;animation-duration:.001s!important;animati
     <div class="st-prev" id="st-prev"><canvas id="st-cv" width="1080" height="1440"></canvas><div id="st-flash"></div></div>
     <div class="st-panel"><div class="st-body" id="st-body"></div><div class="st-tabs" id="st-tabs"></div></div>
   </section>
-  <div id="sheet"><img id="ex-img" alt="分享图"><div class="tip">长按图片可以保存到相册</div>
-    <div class="sheet-act"><button class="cta line" id="btn-close">关闭</button><button class="cta line" style="width:auto;flex:1" id="ex-copy">复制文案</button><a class="cta w" id="ex-dl">下载 PNG</a></div></div>
+  <div id="sheet"><img id="ex-img" alt="分享图"><div class="tip">选择分享到</div>
+    <div class="share-row" id="share-row"><button data-p="wechat"><span class="si" style="background:#07C160"><svg viewBox="0 0 40 40"><ellipse cx="16.5" cy="17" rx="9" ry="7.5" fill="#fff"/><ellipse cx="25" cy="23" rx="7.5" ry="6.2" fill="#fff" stroke="#07C160" stroke-width="1.6"/><circle cx="13.5" cy="15.5" r="1.2" fill="#07C160"/><circle cx="19.5" cy="15.5" r="1.2" fill="#07C160"/><circle cx="22.6" cy="22" r="1" fill="#07C160"/><circle cx="27.4" cy="22" r="1" fill="#07C160"/></svg></span><b>微信好友</b></button><button data-p="moments"><span class="si" style="background:#fff"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="10" fill="none" stroke="#07C160" stroke-width="2.4"/><path d="M20 10 L23 19 M30 20 L21 23 M20 30 L17 21 M10 20 L19 17" stroke="#3A8DFF" stroke-width="2.2" stroke-linecap="round"/><circle cx="20" cy="20" r="3" fill="#FFB020"/></svg></span><b>朋友圈</b></button><button data-p="xhs"><span class="si" style="background:#FF2442"><svg viewBox="0 0 40 40"><text x="20" y="24.5" text-anchor="middle" font-size="10.5" font-weight="800" fill="#fff" font-family="PingFang SC,sans-serif">小红书</text></svg></span><b>小红书</b></button><button data-p="douyin"><span class="si" style="background:#111"><svg viewBox="0 0 40 40"><path d="M22.5 9v14.2a4.6 4.6 0 1 1-4.6-4.6" fill="none" stroke="#25F4EE" stroke-width="3" transform="translate(-1 -0.8)"/><path d="M22.5 9v14.2a4.6 4.6 0 1 1-4.6-4.6" fill="none" stroke="#FE2C55" stroke-width="3" transform="translate(1 0.8)"/><path d="M22.5 9v14.2a4.6 4.6 0 1 1-4.6-4.6M22.5 9c0 3.2 2.6 5.8 5.8 5.8" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg></span><b>抖音</b></button><button data-p="weibo"><span class="si" style="background:#fff"><svg viewBox="0 0 40 40"><ellipse cx="18.5" cy="23" rx="10" ry="7" fill="#E6162D"/><ellipse cx="18" cy="23.5" rx="4.6" ry="3.4" fill="#fff"/><circle cx="17.4" cy="23.6" r="1.6" fill="#111"/><path d="M25 11.5a6 6 0 0 1 6 6" stroke="#FF9933" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg></span><b>微博</b></button><button data-p="save"><span class="si" style="background:rgba(255,255,255,.18)"><svg viewBox="0 0 40 40"><path d="M20 11v13m-5.5-5.5L20 24l5.5-5.5M12 28h16" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>保存图片</b></button></div><div id="share-hint"></div><button class="share-cancel" id="btn-close">取消</button></div>
 </div>
 <canvas id="pf"></canvas>
 
@@ -1590,8 +1598,23 @@ function stMove(e){if(!drag)return;const r=$('st-cv').getBoundingClientRect(),fx
   if(drag.k==='photo'){const f=S.photoMode==='frame'?2:1;S.px=clamp(drag.px+(fx-drag.x)*f,-1.5,1.5);S.py=clamp(drag.py+(fy-drag.y)*f,-1.5,1.5)}
   else S[drag.k]=[clamp(fx+drag.o[0],.08,.92),clamp(fy+drag.o[1],.05,.95)];stRender()}
 function openStudio(){show('s-studio');panel();stRender();buzz(12)}
-function exportPng(){const cv=$('st-cv');renderShare(cv);const url=cv.toDataURL('image/png');$('ex-img').src=url;$('ex-dl').href=url;$('ex-dl').download='heygo-ghost-race-'+S.tpl+'.png';$('sheet').classList.add('on');buzz([10,30,16])}
+function exportPng(){const cv=$('st-cv');renderShare(cv);const url=cv.toDataURL('image/png');$('ex-img').src=url;window.__shareUrl=url;$('share-hint').textContent='';$('sheet').classList.add('on');buzz([10,30,16])}
 
+
+/* 分享：支持系统分享（带图片）时直接唤起系统面板，里面可选微信、小红书、抖音等；
+   不支持时保存图片并复制文案，再尝试打开对应 App（只在手机上有效）。 */
+const SHARE_APP={wechat:['微信','weixin://'],moments:['朋友圈','weixin://'],xhs:['小红书','xhsdiscover://'],douyin:['抖音','snssdk1128://'],weibo:['微博','sinaweibo://']};
+function saveImg(url){const a=document.createElement('a');a.href=url;a.download='heygo-ghost-race-'+S.tpl+'.png';document.body.appendChild(a);a.click();a.remove()}
+async function shareTo(p){const url=window.__shareUrl;if(!url)return;buzz(12);
+  if(p==='save'){saveImg(url);$('share-hint').textContent='图片已保存';return}
+  const name=SHARE_APP[p][0];
+  try{const blob=await (await fetch(url)).blob();const file=new File([blob],'heygo-ghost-race.png',{type:'image/png'});
+    const txt=(S.caption||'')+' #Heygo同道幽灵赛';
+    if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],text:txt});$('share-hint').textContent='已打开系统分享，选择「'+name+'」即可';return}}catch(err){if(err&&err.name==='AbortError')return}
+  try{copyText()}catch(e){}
+  saveImg(url);
+  $('share-hint').textContent='图片已保存、文案已复制，打开「'+name+'」发布即可';
+  if(/iPhone|iPad|Android/i.test(navigator.userAgent))setTimeout(()=>{location.href=SHARE_APP[p][1]},600)}
 /* ---------- 事件 ---------- */
 setText();goFill();
 $('go-challenge').onclick=goToDiscover;$('go-pill').onclick=()=>{$('go-pill').classList.remove('in');$('gfeed').scrollTo({top:$('gfeed').scrollHeight,behavior:'smooth'})};
@@ -1603,7 +1626,7 @@ $('s-finale').onclick=()=>{if(cur==='s-finale'){buzz(10);startResult()}};
 $('btn-replay').onclick=()=>startRace();
 $('btn-poster').onclick=openStudio;$('btn-close').onclick=()=>$('sheet').classList.remove('on');
 $('st-tabs').innerHTML=TABS.map(t=>'<button data-act="tab" data-v="'+t[0]+'"><svg><use href="#'+t[2]+'"/></svg>'+t[1]+'</button>').join('');
-$('s-studio').addEventListener('click',stAct);$('st-back').onclick=()=>{show('s-result')};$('st-export').onclick=exportPng;$('ex-copy').onclick=copyText;
+$('s-studio').addEventListener('click',stAct);$('st-back').onclick=()=>{show('s-result')};$('st-export').onclick=exportPng;$('share-row').onclick=e=>{const b=e.target.closest('button');if(b)shareTo(b.dataset.p)};
 $('st-cv').addEventListener('pointerdown',stDown);$('st-cv').addEventListener('pointermove',stMove);['pointerup','pointercancel'].forEach(n=>$('st-cv').addEventListener(n,()=>{drag=null}));
 $('stamps').onclick=e=>{const b=e.target.closest('button');if(b)stamp(b.dataset.s)};
 window.addEventListener('resize',()=>{if(cur==='s-go'){goCharts();goThumb()}if(cur==='s-discover')drawDisc(performance.now());if(cur==='s-result')drawTurn();if(cur==='s-studio')fitPrev()});
