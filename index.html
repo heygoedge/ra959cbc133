@@ -1629,5 +1629,12 @@ else if(SHOT==='gofeed'){show('s-go');goCharts();if(H.push)goPush(true);if(H.y)$
 else startGo();
 })();
 </script>
+<script>
+/* 安卓浏览器：首次触摸进入全屏，隐藏地址栏和底部导航（iOS Safari 不支持，用「添加到主屏幕」） */
+(function(){var standalone=matchMedia('(display-mode: standalone)').matches||matchMedia('(display-mode: fullscreen)').matches||navigator.standalone;
+if(standalone||!/Android/i.test(navigator.userAgent))return;
+var go=function(){var el=document.documentElement;(el.requestFullscreen||el.webkitRequestFullscreen||function(){}).call(el,{navigationUI:'hide'});};
+document.addEventListener('touchend',go,{once:true});})();
+</script>
 </body>
 </html>
